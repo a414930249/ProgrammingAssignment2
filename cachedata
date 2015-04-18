@@ -1,0 +1,45 @@
+#In first function ,'MakeCacheMatrix'create a special "matrix",
+#which is really a list contain a function to 
+#1. set the value of the matrix
+#2. get the value of the matrix
+#3. set the inverse value of the matrix
+#4. get the inverse matrix
+#
+MakeCacheMatrix <- function(matrix = matrix()){
+    inv <- NULL
+    set <- function(new_matrix){
+        matrix <<- new_matrix
+        inv <<- NULL
+    }
+    get <- function()matrix
+    setInvMatrix <- function(inverse) inv <<- inverse
+    getInvMatrix <- function()inv
+    list(set = set,get = get,
+         setInvMatrix = setInvMatrix,
+         getInvMatrix = getInvMatrix)
+}
+
+#the second function calcuates the reverse of the special "matrix"
+#created with the above function.However, it first check to see if 
+#the matrix has already been inversed,If so,it 'get'`s the mean from
+#the cache and skips the computation.Otherwise, it call the solve 
+#function to get the inverse matrix,and then using the setInvMatrix
+#function to set the value.
+
+cacheSolve <- function(matrix){
+    mtx <-matrix$getInvMatrix()
+    if(!is.null(mtx)){
+        print ("get cached matrix " )
+        return(mtx)
+    }
+    data <- matrix$get()
+    rev <- solve(data)
+    matrix$setInvMatrix(rev)
+    matrix
+}
+
+#trail
+# m < -sample(1:20,16),4,4)
+# mtx<- MakeCacheMatrix(m)
+# cacheSolve(mtx)
+# mtx$getInvMatrix()
